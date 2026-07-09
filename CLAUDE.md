@@ -37,7 +37,10 @@ into a career-ops checkout. There is no runtime code here that career-ops runs.
   `design-forward` with a disclosure note; every other theme is `none`. Do not
   silently change a theme's risk tier.
 - **Previews match templates.** Each theme ships a CV and a cover preview PNG at
-  1224x1584. Regenerate them when a template changes.
+  1224x1584. Regenerate them with `npm run previews` (after a one-time
+  `npm run previews:setup`) whenever a template changes, so shipped equals tool
+  output. They approximate the authoritative career-ops `generate-pdf.mjs`
+  render, not pixel-for-pixel.
 - **No personal data.** No real CV content in templates or previews.
 - **The validator is the single source of truth.** Do not weaken a check to make
   a template pass; fix the template.
@@ -47,6 +50,10 @@ into a career-ops checkout. There is no runtime code here that career-ops runs.
 - `npm run validate` runs the validator against `pack.json`.
 - `npm test` runs the validator's unit tests (`node --test`).
 - `npm run smoke` asserts this pack validates against its own manifest.
+- `npm run previews:setup` installs Playwright + Chromium on demand (never saved
+  as a dependency); `npm run previews` renders the preview PNGs from
+  `sample-cv.json`. `test/previews-fill.test.mjs` (part of `npm test`) is the
+  browser-free guard that the sample fills every template placeholder.
 - `npm run format` / `npm run format:check` (Prettier). `templates/` is
   Prettier-ignored on purpose; the validator is their gate.
 
@@ -58,4 +65,6 @@ into a career-ops checkout. There is no runtime code here that career-ops runs.
 - Each theme's cover letter reuses its CV masthead, face, accent, and density.
   Keep the accent out of body copy and letter furniture.
 - Run `npm run validate`, `npm test`, and `npm run format:check` before opening a
-  PR. Regenerate the affected previews when a template changes.
+  PR. When a template changes, regenerate the affected previews with
+  `npm run previews` (scope with ids, e.g. `npm run previews ledger`) and commit
+  the updated PNGs.
