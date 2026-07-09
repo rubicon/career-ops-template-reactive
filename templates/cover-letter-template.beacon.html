@@ -1,0 +1,251 @@
+<!-- career-ops-template
+name: Beacon
+description: Cover letter matching the Beacon CV — Trebuchet MS, steel-blue page-top letterhead bar, uppercase structural labels.
+version: 0.1.0
+date: 2026-07-08
+origin: reactive-resume/scizor
+atsRisk: none
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — {{NAME}}</title>
+<style>
+  /* Beacon cover letter — masthead matches the Beacon CV exactly: Trebuchet MS
+     stack, steel-blue #2B4A63 name and page-top letterhead band (border-top),
+     uppercase structural labels (role line, dateline) echoing the CV's section
+     headers, light #D5DBE2 hairline divider. */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, sans-serif;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1A1A1A;
+    background: #FFFFFF;
+    /* Beacon letterhead band — same device as the CV's .page border-top. */
+    border-top: 5px solid #2B4A63;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* === LETTERHEAD — matches the CV masthead === */
+  .name {
+    font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, sans-serif;
+    font-size: 23pt;
+    font-weight: 700;
+    color: #2B4A63;
+    line-height: 1.15;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  .contact, .credentials {
+    font-size: 10pt;
+    color: #1A1A1A;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #1A1A1A;
+    text-decoration: none;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid #D5DBE2;
+    margin: 10px 0 14px;
+  }
+
+  /* === STRUCTURAL MOMENTS — echo the CV's section-header treatment === */
+  .role-title {
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #1A1A1A;
+    margin-top: 14px;
+    margin-bottom: 5px;
+  }
+
+  .dateline {
+    font-size: 10.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #2B4A63;
+    margin-bottom: 16px;
+  }
+
+  .greeting {
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  /* === LETTER BODY === */
+  p {
+    margin-bottom: 10px;
+  }
+
+  .achievements {
+    list-style: none;
+    margin: 2px 0 10px;
+  }
+
+  .achievements li {
+    margin-bottom: 5px;
+    padding-left: 11px;
+    position: relative;
+    line-height: 1.55;
+  }
+
+  .achievements li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+    color: #1A1A1A;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 4px;
+    margin-bottom: 10px;
+  }
+
+  .footnotes {
+    margin-top: 12px;
+    padding-top: 5px;
+    border-top: 1px solid #D5DBE2;
+  }
+
+  .footnotes p {
+    font-size: 10pt;
+    color: #444444;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+  /* === PAGE BREAK CONTROL === */
+  .achievements li,
+  .footnotes p {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .role-title,
+  .greeting {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* === RTL (Arabic) Support === */
+  html[lang="ar"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .name,
+  html[lang="ar"] .role-title,
+  html[lang="ar"] .dateline {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .achievements li {
+    padding-right: 11px;
+    padding-left: 0;
+  }
+
+  html[lang="ar"] .achievements li::before {
+    right: 0;
+    left: auto;
+  }
+
+  /* === CJK (Japanese) font fallback === */
+  /* Without a CJK fallback, Japanese text renders as tofu (□) in headless
+     Chromium on any system without a CJK system font (Linux/CI, minimal
+     containers). The Latin theme stack is kept first so ASCII still uses
+     Trebuchet MS, then the browser's per-glyph fallback picks the first
+     installed CJK face for kana and kanji. Mirrors the lang="ar" precedent. */
+  html[lang="ja"] body {
+    font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', sans-serif;
+  }
+
+  html[lang="ja"] .name,
+  html[lang="ja"] .role-title,
+  html[lang="ja"] .dateline {
+    font-family: 'Trebuchet MS', 'Segoe UI', Tahoma, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', sans-serif;
+  }
+  /* Recipient address block (business-letter form). Ink only: accent is
+     forbidden on letter furniture. When {{RECIPIENT_BLOCK}} is empty the whole
+     element is absent (no box, no dangling label, no collapsed gap) and the
+     dateline's own bottom margin carries the date -> Re: -> salutation rhythm. */
+  .recipient {
+    margin: 0 0 12pt;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  .recipient div {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="name">{{NAME}}</div>
+  <div class="contact">{{CONTACT_LINE}}</div>
+  {{CREDENTIALS_BLOCK}}
+  <hr class="divider">
+  <div class="dateline">{{DATELINE}}</div>
+  {{RECIPIENT_BLOCK}}
+  <div class="role-title">Re: Application for {{ROLE_TITLE}}</div>
+
+
+  {{GREETING_BLOCK}}
+  <p>{{OPENING}}</p>
+  <p>{{PROFILE_INTRO}}</p>
+
+  {{ACHIEVEMENTS_BLOCK}}
+
+  {{PROBLEMS_BLOCK}}
+  {{CLOSING_BLOCK}}
+  {{LANGUAGE_CLOSING_BLOCK}}
+  {{FOOTNOTES_BLOCK}}
+</body>
+</html>

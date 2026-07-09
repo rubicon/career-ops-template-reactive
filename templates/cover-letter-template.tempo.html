@@ -1,0 +1,207 @@
+<!-- career-ops-template
+name: Tempo
+description: Cover letter matching the Tempo CV — Calibri/Carlito, ocean-blue accent tab at the dateline, whitespace-forward.
+version: 0.1.0
+date: 2026-07-08
+origin: reactive-resume/lapras
+atsRisk: none
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — {{NAME}}</title>
+<style>
+  /* Tempo — soft modern cover letter, visual match to cv-template.tempo.html.
+     Same Calibri/Carlito stack and single ocean-blue accent #1E5F74; the
+     masthead separates by whitespace (no rule), and the theme's accent-tab
+     device sits under the dateline. */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: Calibri, Carlito, 'Segoe UI', Arial, sans-serif;
+    font-size: 11.5pt;
+    line-height: 1.7;
+    color: #1A1A1A;
+    background: #ffffff;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* ---------- Masthead (identical to the CV) ---------- */
+  .name {
+    font-size: 26pt;
+    font-weight: 600;
+    color: #1E5F74;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    margin-bottom: 7px;
+  }
+
+  .contact, .credentials {
+    font-size: 10.5pt;
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 2px;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #444;
+    text-decoration: none;
+  }
+
+  /* Tempo's masthead device is whitespace: the divider renders as pure
+     spacing (no visible rule; the accent tab lives at the dateline). */
+  .divider {
+    border: none;
+    margin: 0 0 26px;
+  }
+
+  /* ---------- Structural moments (CV section-title treatment) ---------- */
+  .role-title {
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #1A1A1A;
+    margin-top: 4px;
+    margin-bottom: 12px;
+  }
+
+  .dateline {
+    font-size: 11.5pt;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #1E5F74;
+    margin-bottom: 24px;
+  }
+
+  /* The Tempo accent tab, kept at the dateline: a short CSS border block,
+     never a glyph. */
+  .dateline::after {
+    content: "";
+    display: block;
+    margin-top: 3px;
+    width: 2.5em;
+    border-bottom: 2.5px solid #1E5F74;
+  }
+
+  .greeting {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: #1A1A1A;
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin-bottom: 9px;
+  }
+
+  .achievements {
+    list-style: none;
+    margin-bottom: 6px;
+  }
+
+  .achievements li {
+    margin-bottom: 4px;
+    padding-left: 14px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .achievements li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+    color: #1A1A1A;
+  }
+
+  .achievements li strong {
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 4px;
+    margin-bottom: 9px;
+  }
+
+  .footnotes {
+    margin-top: 14px;
+    padding-top: 6px;
+    border-top: 0.5pt solid #cccccc;
+  }
+
+  .footnotes p {
+    font-size: 10pt;
+    color: #777;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+  /* Recipient address block (business-letter form). Ink only: accent is
+     forbidden on letter furniture. When {{RECIPIENT_BLOCK}} is empty the whole
+     element is absent (no box, no dangling label, no collapsed gap) and the
+     dateline's own bottom margin carries the date -> Re: -> salutation rhythm. */
+  .recipient {
+    margin: 0 0 12pt;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  .recipient div {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="name">{{NAME}}</div>
+  <div class="contact">{{CONTACT_LINE}}</div>
+  {{CREDENTIALS_BLOCK}}
+  <hr class="divider">
+  <div class="dateline">{{DATELINE}}</div>
+  {{RECIPIENT_BLOCK}}
+  <div class="role-title">Re: Application for {{ROLE_TITLE}}</div>
+
+
+  {{GREETING_BLOCK}}
+  <p>{{OPENING}}</p>
+  <p>{{PROFILE_INTRO}}</p>
+
+  {{ACHIEVEMENTS_BLOCK}}
+
+  {{PROBLEMS_BLOCK}}
+  {{CLOSING_BLOCK}}
+  {{LANGUAGE_CLOSING_BLOCK}}
+  {{FOOTNOTES_BLOCK}}
+</body>
+</html>

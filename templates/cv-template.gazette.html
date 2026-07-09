@@ -1,0 +1,588 @@
+<!-- career-ops-template
+name: Gazette
+description: Editorial margin-label layout: Verdana, monochrome, DOM-linear left-gutter section labels.
+version: 0.1.0
+date: 2026-07-08
+origin: reactive-resume/bronzor
+atsRisk: design-forward
+-->
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{NAME}} — CV</title>
+<style>
+  /* ATS-safe typography:
+     System sans stack only (Verdana first — the Gazette editorial voice).
+     No webfonts: bundled variable woff2 fonts render with glyph advances that
+     make PDF text extractors inject spurious spaces inside words, corrupting
+     ATS keyword parsing. The lang="ja" rules reuse this Latin base stack (with
+     a CJK fallback added); the lang="ar" rules define their own Arabic stack. */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Setting this on every element covers headings and
+       competency items too. Required ligatures (rlig) stay on, so Arabic shaping
+       is unaffected. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #ffffff;
+  }
+
+  body {
+    font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+    font-size: 11pt;
+    line-height: 1.42;
+    color: #1A1A1A;
+    background: #ffffff;
+    padding: 0;
+    margin: 0;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  .page {
+    width: 100%;
+    max-width: {{PAGE_WIDTH}};
+    margin: 0 auto;
+    padding: 2px 0;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* === HEADER (masthead: full width, above the gutter grid) ===
+     The Gazette header device is the strong 2px editorial rule closing the
+     masthead (border-bottom here), replacing the base template's
+     .header-gradient element. */
+  .header {
+    padding-bottom: 8px;
+    border-bottom: 2px solid #1A1A1A;
+    margin-bottom: 2px;
+  }
+
+  .header h1 {
+    font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+    font-size: 30pt;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #1A1A1A;
+    line-height: 1.08;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    margin-top: 6px;
+    font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.42;
+    letter-spacing: 0.2px;
+    color: #333333;
+  }
+
+  .contact-row a {
+    color: #333333;
+    text-decoration: none;
+  }
+
+  .contact-row .separator {
+    color: #999999;
+  }
+
+  /* === OPTIONAL PROFILE PHOTO (opt-in, DACH/European markets) ===
+     Off by default: with no candidate.photo the {{PHOTO}} slot is empty, no
+     image element is emitted, and the layout is byte-identical to a photoless CV.
+     When opted in (candidate.photo in config/profile.yml) the photo floats into
+     the top corner and the header/summary text wraps beside it. Photos are
+     penalized by US/UK/many-market ATS, so this is never on by default. */
+  .cv-photo {
+    float: right;
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    margin: 0 0 8px 14px;
+    border: 1px solid #d9d9d9;
+  }
+
+  /* === TWO-TIER GUTTER GRID ===
+     DOM-linear: each .section-title immediately precedes its section content
+     in source order; CSS places the title in the left gutter column and the
+     content beside it. Labels-above fallback: set .grid to
+     grid-template-columns: 1fr and let the labels sit above their content —
+     that removes the gutter entirely with no markup change. */
+  .grid {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    column-gap: 26px;
+  }
+
+  .section {
+    display: contents;
+  }
+
+  .section-title {
+    grid-column: 1;
+    font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #555555;
+    padding-top: 9px;
+    line-height: 1.35;
+  }
+
+  .section > :not(.section-title) {
+    grid-column: 2;
+  }
+
+  /* Section rule: drawn across the content column only, on the first content
+     element after each gutter label (matches the editorial mock). */
+  .section > .section-title + * {
+    padding-top: 9px;
+    border-top: 1px solid #d9d9d9;
+  }
+
+  .section > :last-child {
+    padding-bottom: 8px;
+  }
+
+  /* First section pair: no top rule for a cleaner masthead join */
+  .grid > .section:first-child > .section-title {
+    padding-top: 10px;
+  }
+
+  .grid > .section:first-child > .section-title + * {
+    border-top: 0;
+    padding-top: 10px;
+  }
+
+  /* === PROFESSIONAL SUMMARY === */
+  .summary-text {
+    font-size: 11pt;
+    line-height: 1.42;
+    color: #262626;
+  }
+
+  /* === CORE COMPETENCIES ===
+     Simple two-column wrapped text — no pills, no dots. */
+  .competencies-grid {
+    columns: 2;
+    column-gap: 26px;
+    color: #262626;
+  }
+
+  .competency-tag {
+    display: block;
+    font-size: 11pt;
+    color: #262626;
+    padding: 1px 0;
+  }
+
+  /* === WORK EXPERIENCE === */
+  .job {
+    margin-bottom: 7px;
+  }
+
+  .job:last-child {
+    margin-bottom: 0;
+  }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .job-company {
+    font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  .job-period {
+    font-size: 10pt;
+    color: #555555;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+  }
+
+  .job-role {
+    font-size: 10.5pt;
+    font-style: italic;
+    color: #444444;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  /* One- to two-line company descriptor between the header and the bullets;
+     kept muted so it supports, not competes with, the bullets. */
+  .job-descriptor {
+    font-size: 10pt;
+    color: #555555;
+    line-height: 1.42;
+    margin-bottom: 2px;
+  }
+
+  .job-location {
+    font-size: 10pt;
+    color: #555555;
+  }
+
+  .job ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 3px;
+  }
+
+  .job li {
+    font-size: 10.5pt;
+    line-height: 1.42;
+    color: #2b2b2b;
+    padding-left: 13px;
+    text-indent: -13px;
+    margin-bottom: 2px;
+  }
+
+  .job li::before {
+    content: "\2014  ";
+    color: #1A1A1A;
+  }
+
+  .job li strong {
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  /* === PROJECTS === */
+  .project {
+    margin-bottom: 5px;
+  }
+
+  .project:last-child {
+    margin-bottom: 0;
+  }
+
+  .project-title {
+    font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  .project-badge {
+    font-size: 10pt;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #555555;
+    margin-left: 6px;
+  }
+
+  .project-desc {
+    font-size: 10.5pt;
+    color: #2b2b2b;
+    margin-top: 2px;
+    line-height: 1.42;
+  }
+
+  .project-tech {
+    font-size: 10pt;
+    color: #555555;
+    margin-top: 2px;
+  }
+
+  /* === EDUCATION === */
+  .edu-item {
+    margin-bottom: 3px;
+  }
+
+  .edu-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .edu-title {
+    font-weight: 700;
+    font-size: 11pt;
+    color: #1A1A1A;
+  }
+
+  .edu-org {
+    color: #444444;
+    font-weight: 400;
+  }
+
+  .edu-year {
+    font-size: 10pt;
+    color: #555555;
+    white-space: nowrap;
+  }
+
+  .edu-desc {
+    font-size: 10pt;
+    color: #555555;
+    margin-top: 2px;
+    line-height: 1.42;
+  }
+
+  /* === CERTIFICATIONS === */
+  .cert-table {
+    display: table;
+    width: 100%;
+  }
+
+  .cert-item {
+    display: table-row;
+  }
+
+  .cert-item > * {
+    display: table-cell;
+    vertical-align: baseline;
+    padding-bottom: 5px;
+  }
+
+  .cert-title {
+    font-size: 10.5pt;
+    color: #262626;
+  }
+
+  .cert-org {
+    color: #444444;
+    white-space: nowrap;
+  }
+
+  .cert-year {
+    font-size: 10pt;
+    color: #555555;
+    white-space: nowrap;
+    text-align: right;
+    width: 44px;
+  }
+
+  /* === SKILLS === */
+  .skills-grid {
+    display: block;
+  }
+
+  .skill-item {
+    display: block;
+    font-size: 10.5pt;
+    color: #2b2b2b;
+    margin-bottom: 2px;
+  }
+
+  .skill-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .skill-category {
+    font-weight: 700;
+    color: #1A1A1A;
+    font-size: 10.5pt;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Keep a small right gutter for the print box: right-aligned content
+       (job periods, education years) right-aligns to the content-box edge and
+       the rightmost glyph's side bearing can spill ~1px past it and get
+       clipped by Chromium's print clip. Padding set outside @media print is
+       reset here, so the gutter must be restored inside the print rule. */
+    .page {
+      padding: 0;
+    }
+  }
+
+  /* === PAGE BREAK CONTROL === */
+  /* Only avoid breaking small atomic units (a cert row, an education line, the
+     header, a single competency or skill).  Sections and multi-bullet roles are
+     allowed to flow across a page boundary so content packs tight instead of
+     jumping wholesale and leaving large bottom gaps. */
+  .header,
+  .edu-item,
+  .cert-item,
+  .competency-tag,
+  .skill-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Keep a heading attached to the content that follows it, so headings are not
+     orphaned at the bottom of a page. */
+  .section-title,
+  .job-company,
+  .job-role,
+  .project-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* === RTL (Arabic) Support === */
+  html[lang="ar"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .header h1,
+  html[lang="ar"] .section-title,
+  html[lang="ar"] .job-company,
+  html[lang="ar"] .project-title,
+  html[lang="ar"] .competency-tag,
+  html[lang="ar"] .skill-category {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  /* direction: rtl flips the gutter grid columns automatically, so the label
+     gutter moves to the right edge with no extra rules. */
+  html[lang="ar"] .job li {
+    padding-left: 0;
+    padding-right: 13px;
+  }
+
+  html[lang="ar"] .project-badge {
+    margin-right: 6px;
+    margin-left: 0;
+  }
+
+  html[lang="ar"] .cert-year {
+    text-align: left;
+  }
+
+  html[lang="ar"] .cert-table {
+    direction: rtl;
+  }
+
+  html[lang="ar"] .cv-photo {
+    float: left;
+    margin: 0 14px 8px 0;
+  }
+
+  /* === CJK (Japanese) font fallback === */
+  /* No bundled webfonts here, but without an explicit CJK fallback Japanese
+     text renders as tofu (□) in headless Chromium on any system without a CJK
+     system font (Linux/CI, minimal containers). The Latin theme faces stay
+     first so ASCII keeps the Verdana voice, then the browser's per-glyph
+     fallback picks the first installed CJK face for kana and kanji. Mirrors
+     the lang="ar" precedent above. */
+  html[lang="ja"] body {
+    font-family: Verdana, Tahoma, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', sans-serif;
+  }
+
+  html[lang="ja"] .header h1,
+  html[lang="ja"] .section-title,
+  html[lang="ja"] .job-company,
+  html[lang="ja"] .project-title,
+  html[lang="ja"] .competency-tag,
+  html[lang="ja"] .skill-category {
+    font-family: Verdana, Tahoma, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', sans-serif;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  {{PHOTO}}
+  <!-- HEADER -->
+  <div class="header">
+    <h1>{{NAME}}</h1>
+    <div class="contact-row">
+      <a href="tel:{{PHONE}}">{{PHONE}}</a>
+      <span class="separator">|</span>
+      <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+      <span class="separator">|</span>
+      <a href="{{LINKEDIN_URL}}">{{LINKEDIN_DISPLAY}}</a>
+      <span class="separator">|</span>
+      <a href="{{PORTFOLIO_URL}}">{{PORTFOLIO_DISPLAY}}</a>
+      <span class="separator">|</span>
+      <span>{{LOCATION}}</span>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <!-- PROFESSIONAL SUMMARY -->
+    <div class="section">
+      <div class="section-title">{{SECTION_SUMMARY}}</div>
+      <div class="summary-text">{{SUMMARY_TEXT}}</div>
+    </div>
+
+    <!-- CORE COMPETENCIES -->
+    <div class="section">
+      <div class="section-title">{{SECTION_COMPETENCIES}}</div>
+      <div class="competencies-grid">
+        {{COMPETENCIES}}
+      </div>
+    </div>
+
+    <!-- WORK EXPERIENCE -->
+    <div class="section">
+      <div class="section-title">{{SECTION_EXPERIENCE}}</div>
+      {{EXPERIENCE}}
+    </div>
+
+    <!-- PROJECTS -->
+    <div class="section">
+      <div class="section-title">{{SECTION_PROJECTS}}</div>
+      {{PROJECTS}}
+    </div>
+
+    <!-- EDUCATION -->
+    <div class="section">
+      <div class="section-title">{{SECTION_EDUCATION}}</div>
+      {{EDUCATION}}
+    </div>
+
+    <!-- CERTIFICATIONS -->
+    <div class="section">
+      <div class="section-title">{{SECTION_CERTIFICATIONS}}</div>
+      <div class="cert-table">{{CERTIFICATIONS}}</div>
+    </div>
+
+    <!-- SKILLS -->
+    <div class="section">
+      <div class="section-title">{{SECTION_SKILLS}}</div>
+      {{SKILLS}}
+    </div>
+
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!-- career-ops-template
+name: Meridian
+description: Cover letter matching the Meridian CV — Georgia serif, bronze accent, centered masthead with a short centered ornament rule divider.
+version: 0.1.0
+date: 2026-07-08
+origin: reactive-resume/kakuna
+atsRisk: none
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — {{NAME}}</title>
+<style>
+  /* Meridian cover letter — companion to cv-template.meridian.html. Same
+     Georgia system serif, same single bronze accent #7A5C1E, same centered
+     masthead, so the letter renders as a visual match to the CV. The plain
+     divider becomes the theme's device: a short centered bronze CSS rule. */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 11.5pt;
+    line-height: 1.65;
+    color: #1A1A1A;
+    background: #ffffff;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  /* === Masthead (matches the Meridian CV exactly) === */
+  .name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 26pt;
+    font-weight: 700;
+    color: #7A5C1E;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.1;
+    text-align: center;
+    margin-bottom: 7px;
+  }
+
+  .contact, .credentials {
+    font-size: 10.5pt;
+    color: #1A1A1A;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #1A1A1A;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* === Theme device: short centered ornament rule (replaces plain divider) === */
+  .divider {
+    border: none;
+    border-top: 1px solid #7A5C1E;
+    opacity: 0.55;
+    width: 84px;
+    margin: 16px auto 22px auto;
+  }
+
+  /* === Structural moments (echo of the CV's flanked-header treatment) === */
+  .role-title {
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #1A1A1A;
+    margin-bottom: 3px;
+  }
+
+  .dateline {
+    font-size: 10.5pt;
+    font-style: italic;
+    color: #1A1A1A;
+    margin-bottom: 18px;
+  }
+
+  .greeting {
+    margin-bottom: 12px;
+  }
+
+  p {
+    margin-bottom: 9px;
+  }
+
+  .achievements {
+    list-style: none;
+    margin-bottom: 6px;
+  }
+
+  .achievements li {
+    margin-bottom: 4px;
+    padding-left: 13px;
+    position: relative;
+    line-height: 1.6;
+  }
+
+  .achievements li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+  }
+
+  .achievements li strong {
+    font-weight: 700;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 4px;
+    margin-bottom: 9px;
+  }
+
+  .footnotes {
+    margin-top: 14px;
+    padding-top: 6px;
+    border-top: 1px solid #cccccc;
+  }
+
+  .footnotes p {
+    font-size: 10pt;
+    color: #666;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+  /* === RTL (Arabic) Support === */
+  html[lang="ar"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .name,
+  html[lang="ar"] .role-title {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .achievements li {
+    padding-right: 13px;
+    padding-left: 0;
+  }
+
+  html[lang="ar"] .achievements li::before {
+    right: 0;
+    left: auto;
+  }
+
+  /* === CJK (Japanese) font fallback === */
+  /* Georgia has no CJK glyphs; keep the Latin theme faces first, then let the
+     browser's per-glyph fallback pick the first installed CJK face. Mirrors
+     the lang="ar" precedent above. */
+  html[lang="ja"] body {
+    font-family: Georgia, 'Times New Roman', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', serif;
+  }
+
+  html[lang="ja"] .name,
+  html[lang="ja"] .role-title {
+    font-family: Georgia, 'Times New Roman', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', serif;
+  }
+  /* Recipient address block (business-letter form). Ink only: accent is
+     forbidden on letter furniture. When {{RECIPIENT_BLOCK}} is empty the whole
+     element is absent (no box, no dangling label, no collapsed gap) and the
+     dateline's own bottom margin carries the date -> Re: -> salutation rhythm. */
+  .recipient {
+    margin: 0 0 12pt;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  .recipient div {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="name">{{NAME}}</div>
+  <div class="contact">{{CONTACT_LINE}}</div>
+  {{CREDENTIALS_BLOCK}}
+  <hr class="divider">
+  <div class="dateline">{{DATELINE}}</div>
+  {{RECIPIENT_BLOCK}}
+  <div class="role-title">Re: Application for {{ROLE_TITLE}}</div>
+
+
+  {{GREETING_BLOCK}}
+  <p>{{OPENING}}</p>
+  <p>{{PROFILE_INTRO}}</p>
+
+  {{ACHIEVEMENTS_BLOCK}}
+
+  {{PROBLEMS_BLOCK}}
+  {{CLOSING_BLOCK}}
+  {{LANGUAGE_CLOSING_BLOCK}}
+  {{FOOTNOTES_BLOCK}}
+</body>
+</html>

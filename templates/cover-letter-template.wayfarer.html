@@ -1,0 +1,200 @@
+<!-- career-ops-template
+name: Wayfarer
+description: Cover letter matching the Wayfarer CV — Helvetica, azure hairline rules and a border-left spine on the letter body.
+version: 0.1.0
+date: 2026-07-08
+origin: reactive-resume/azurill
+atsRisk: none
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — {{NAME}}</title>
+<style>
+  /* Wayfarer — cover-letter companion to cv-template.wayfarer.html. Same
+     Helvetica stack, azure accent (#1B5E8A) on the masthead and structural
+     moments, azure hairline rules (#D8E2EA), and the theme's signature
+     border-left spine carrying the letter body. */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: 'Helvetica Neue', Arial, 'Liberation Sans', 'DejaVu Sans', sans-serif;
+    font-size: 11.5pt;
+    line-height: 1.65;
+    color: #1A1A1A;
+    background: #ffffff;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  /* ---------- Masthead (matches the CV header exactly) ---------- */
+  .name {
+    font-size: 25pt;
+    font-weight: 700;
+    color: #1B5E8A;
+    letter-spacing: 0.01em;
+    line-height: 1.15;
+    margin-bottom: 5px;
+  }
+
+  .contact, .credentials {
+    font-size: 10.5pt;
+    color: #1A1A1A;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #1A1A1A;
+    text-decoration: none;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* The theme's masthead hairline: an azure hairline rule, matching the CV. */
+  .divider {
+    border: none;
+    border-top: 1px solid #D8E2EA;
+    margin: 10px 0 20px;
+  }
+
+  /* ---------- Structural moments ---------- */
+  .role-title {
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #1A1A1A;
+    margin-bottom: 6px;
+  }
+
+  .dateline {
+    font-size: 11pt;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #1B5E8A;
+    margin-bottom: 20px;
+  }
+
+  /* ---------- Letter body spine (theme signature carry-over) ---------- */
+  .letter-spine {
+    border-left: 2px solid #1B5E8A;
+    padding-left: 15px;
+  }
+
+  .greeting {
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
+
+  .achievements {
+    list-style: none;
+    margin: 2px 0 8px;
+  }
+
+  .achievements li {
+    margin-bottom: 5px;
+    padding-left: 12px;
+    position: relative;
+    line-height: 1.55;
+  }
+
+  .achievements li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+    color: #1A1A1A;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+
+  .footnotes {
+    margin-top: 12px;
+    padding-top: 5px;
+    border-top: 1px solid #D8E2EA;
+  }
+
+  .footnotes p {
+    font-size: 10pt;
+    color: #555;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+  /* Recipient address block (business-letter form). Ink only: accent is
+     forbidden on letter furniture. When {{RECIPIENT_BLOCK}} is empty the whole
+     element is absent (no box, no dangling label, no collapsed gap) and the
+     dateline's own bottom margin carries the date -> Re: -> salutation rhythm. */
+  .recipient {
+    margin: 0 0 12pt;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  .recipient div {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="name">{{NAME}}</div>
+  <div class="contact">{{CONTACT_LINE}}</div>
+  {{CREDENTIALS_BLOCK}}
+  <hr class="divider">
+  <div class="dateline">{{DATELINE}}</div>
+  {{RECIPIENT_BLOCK}}
+  <div class="role-title">Re: Application for {{ROLE_TITLE}}</div>
+
+
+  <div class="letter-spine">
+    {{GREETING_BLOCK}}
+    <p>{{OPENING}}</p>
+    <p>{{PROFILE_INTRO}}</p>
+
+    {{ACHIEVEMENTS_BLOCK}}
+
+    {{PROBLEMS_BLOCK}}
+    {{CLOSING_BLOCK}}
+    {{LANGUAGE_CLOSING_BLOCK}}
+  </div>
+
+  {{FOOTNOTES_BLOCK}}
+</body>
+</html>

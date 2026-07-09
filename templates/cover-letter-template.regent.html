@@ -1,0 +1,206 @@
+<!-- career-ops-template
+name: Regent
+description: Cover letter matching the Regent CV — Palatino, plum small-caps masthead floating on whitespace, no rules.
+version: 0.1.0
+date: 2026-07-08
+origin: reactive-resume/gengar
+atsRisk: none
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — {{NAME}}</title>
+<style>
+  /* Regent — elegant correspondence. Same centered Palatino masthead and plum
+     small-caps as the CV. The theme's signature is the ABSENCE of rules: the
+     .divider and .footnotes carry no borders — whitespace does the work. */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    font-size: 11.5pt;
+    line-height: 1.7;
+    color: #1A1A1A;
+    background: #ffffff;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* ---- Masthead: identical voice to the CV header ---- */
+  .name {
+    font-size: 27pt;
+    font-weight: 700;
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    color: #5B2A5E;
+    line-height: 1.2;
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .contact, .credentials {
+    font-size: 10.5pt;
+    color: #1A1A1A;
+    line-height: 1.5;
+    text-align: center;
+    margin-bottom: 2px;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #1A1A1A;
+    text-decoration: none;
+  }
+
+  /* The theme has no rules: the divider is pure whitespace, no border. */
+  .divider {
+    border: none;
+    margin: 0 0 30px;
+  }
+
+  /* Structural moments float as small-caps or italics on whitespace. */
+  .role-title {
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #1A1A1A;
+    margin-top: 10px;
+    margin-bottom: 4px;
+  }
+
+  .dateline {
+    font-variant: small-caps;
+    font-size: 12pt;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: #5B2A5E;
+    margin-bottom: 20px;
+  }
+
+  .greeting {
+    margin-bottom: 8px;
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
+
+  /* En-dash bullets via CSS content — a single glyph, generated, never typed. */
+  .achievements {
+    list-style: none;
+    margin-bottom: 5px;
+  }
+
+  .achievements li {
+    margin-bottom: 5px;
+    padding-left: 13px;
+    position: relative;
+  }
+
+  .achievements li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+    color: #1A1A1A;
+  }
+
+  .achievements li strong {
+    font-weight: 700;
+    color: #1A1A1A;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 5px;
+    margin-bottom: 8px;
+  }
+
+  /* Typed small-caps signature, matching the masthead. */
+  .signature {
+    margin-top: 26px;
+    font-size: 17pt;
+    font-weight: 700;
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    color: #1A1A1A;
+    line-height: 1.2;
+  }
+
+  /* No border-top here either — whitespace separates the footnotes. */
+  .footnotes {
+    margin-top: 22px;
+  }
+
+  .footnotes p {
+    font-size: 10pt;
+    color: #555;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+  /* Recipient address block (business-letter form). Ink only: accent is
+     forbidden on letter furniture. When {{RECIPIENT_BLOCK}} is empty the whole
+     element is absent (no box, no dangling label, no collapsed gap) and the
+     dateline's own bottom margin carries the date -> Re: -> salutation rhythm. */
+  .recipient {
+    margin: 0 0 12pt;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  .recipient div {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="name">{{NAME}}</div>
+  <div class="contact">{{CONTACT_LINE}}</div>
+  {{CREDENTIALS_BLOCK}}
+  <hr class="divider">
+  <div class="dateline">{{DATELINE}}</div>
+  {{RECIPIENT_BLOCK}}
+  <div class="role-title">Re: Application for {{ROLE_TITLE}}</div>
+
+
+  {{GREETING_BLOCK}}
+  <p>{{OPENING}}</p>
+  <p>{{PROFILE_INTRO}}</p>
+
+  {{ACHIEVEMENTS_BLOCK}}
+
+  {{PROBLEMS_BLOCK}}
+  {{CLOSING_BLOCK}}
+  {{LANGUAGE_CLOSING_BLOCK}}
+  {{FOOTNOTES_BLOCK}}
+</body>
+</html>

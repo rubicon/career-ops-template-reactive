@@ -1,0 +1,474 @@
+{
+  "packVersion": 1,
+  "id": "reactive",
+  "name": "career-ops-template-reactive",
+  "displayName": "Reactive Pack",
+  "description": "Fifteen ATS-strict CV and cover-letter theme pairs, ported from the Reactive Resume template designs.",
+  "author": "Dax C. Davis",
+  "homepage": "https://github.com/rubicon/career-ops-template-reactive",
+  "license": "MIT",
+  "version": "0.1.0",
+  "minCareerOpsVersion": "1.18.0",
+  "attribution": [
+    {
+      "source": "Reactive Resume",
+      "author": "Amruth Pillai",
+      "license": "MIT",
+      "url": "https://github.com/amruthpillai/reactive-resume",
+      "note": "Theme designs derived from the Reactive Resume template set; reimplemented as ATS-safe single-column HTML."
+    }
+  ],
+  "templates": [
+    {
+      "id": "ledger",
+      "displayName": "Ledger",
+      "description": "Traditional serif authority: Georgia, monochrome, full-width ruled headers, right-flush dates.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "rhyhorn",
+      "register": "law / finance / academe",
+      "levers": {
+        "face": "georgia",
+        "axis": "left",
+        "header": "full-rule",
+        "accent": "mono",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": null,
+        "contrastOnWhite": null,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.ledger.html",
+        "cover": "templates/cover-letter-template.ledger.html"
+      },
+      "previews": {
+        "cv": "templates/previews/ledger-cv.png",
+        "cover": "templates/previews/ledger-cover.png"
+      }
+    },
+    {
+      "id": "slate",
+      "displayName": "Slate",
+      "description": "Engineering classic: Helvetica, monochrome, full rules with a heavy name rule, compact.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "onyx",
+      "register": "engineering classic",
+      "levers": {
+        "face": "helvetica",
+        "axis": "left",
+        "header": "full-rule-heavy-name",
+        "accent": "mono",
+        "density": "compact"
+      },
+      "accent": {
+        "hex": null,
+        "contrastOnWhite": null,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.slate.html",
+        "cover": "templates/cover-letter-template.slate.html"
+      },
+      "previews": {
+        "cv": "templates/previews/slate-cv.png",
+        "cover": "templates/previews/slate-cover.png"
+      }
+    },
+    {
+      "id": "meridian",
+      "displayName": "Meridian",
+      "description": "Formal centered classic: Georgia, bronze, centered masthead with symmetric flanked CSS rules.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "kakuna",
+      "register": "ceremonial / board / gov",
+      "levers": {
+        "face": "georgia",
+        "axis": "centered",
+        "header": "flanked-rules",
+        "accent": "bronze",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#7A5C1E",
+        "contrastOnWhite": 6.22,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.meridian.html",
+        "cover": "templates/cover-letter-template.meridian.html"
+      },
+      "previews": {
+        "cv": "templates/previews/meridian-cv.png",
+        "cover": "templates/previews/meridian-cover.png"
+      }
+    },
+    {
+      "id": "cadence",
+      "displayName": "Cadence",
+      "description": "Modern structured: Helvetica, indigo, uppercase letterspaced headers, 3-column competency grid.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "meowth",
+      "register": "modern corporate / tech mgmt",
+      "levers": {
+        "face": "helvetica",
+        "axis": "left",
+        "header": "uppercase-rule",
+        "accent": "indigo",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#33356B",
+        "contrastOnWhite": 11.28,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.cadence.html",
+        "cover": "templates/cover-letter-template.cadence.html"
+      },
+      "previews": {
+        "cv": "templates/previews/cadence-cv.png",
+        "cover": "templates/previews/cadence-cover.png"
+      }
+    },
+    {
+      "id": "beacon",
+      "displayName": "Beacon",
+      "description": "Branded compact: Trebuchet MS, steel-blue page-top letterhead bar, tight uppercase headers.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "scizor",
+      "register": "consulting / strategy",
+      "levers": {
+        "face": "trebuchet",
+        "axis": "left",
+        "header": "top-bar-uppercase",
+        "accent": "steel-blue",
+        "density": "compact"
+      },
+      "accent": {
+        "hex": "#2B4A63",
+        "contrastOnWhite": 9.28,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.beacon.html",
+        "cover": "templates/cover-letter-template.beacon.html"
+      },
+      "previews": {
+        "cv": "templates/previews/beacon-cv.png",
+        "cover": "templates/previews/beacon-cover.png"
+      }
+    },
+    {
+      "id": "gazette",
+      "displayName": "Gazette",
+      "description": "Editorial margin-label layout: Verdana, monochrome, DOM-linear left-gutter section labels.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "design-forward",
+      "atsRiskNote": "Source order is strictly linear (label then content), so linear-parsing ATS read it correctly; a minority of x-position parsers could misread the visual gutter. A labels-above fallback is documented in the template header.",
+      "origin": "bronzor",
+      "register": "editorial",
+      "levers": {
+        "face": "verdana",
+        "axis": "left-gutter",
+        "header": "gutter-label",
+        "accent": "mono",
+        "density": "airy"
+      },
+      "accent": {
+        "hex": null,
+        "contrastOnWhite": null,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.gazette.html",
+        "cover": "templates/cover-letter-template.gazette.html"
+      },
+      "previews": {
+        "cv": "templates/previews/gazette-cv.png",
+        "cover": "templates/previews/gazette-cover.png"
+      }
+    },
+    {
+      "id": "tempo",
+      "displayName": "Tempo",
+      "description": "Soft modern: Calibri/Carlito, ocean-blue short accent tabs under headers, whitespace-forward.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "lapras",
+      "register": "product / design-adjacent",
+      "levers": {
+        "face": "carlito",
+        "axis": "left",
+        "header": "accent-tab",
+        "accent": "ocean-blue",
+        "density": "airy"
+      },
+      "accent": {
+        "hex": "#1E5F74",
+        "contrastOnWhite": 7.13,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.tempo.html",
+        "cover": "templates/cover-letter-template.tempo.html"
+      },
+      "previews": {
+        "cv": "templates/previews/tempo-cv.png",
+        "cover": "templates/previews/tempo-cover.png"
+      }
+    },
+    {
+      "id": "harbor",
+      "displayName": "Harbor",
+      "description": "Calm serif professional: Cambria/Caladea, teal small-caps headers with text-width underlines.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "glalie",
+      "register": "calm senior professional",
+      "levers": {
+        "face": "cambria",
+        "axis": "left",
+        "header": "text-underline",
+        "accent": "teal",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#0F5E5E",
+        "contrastOnWhite": 7.55,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.harbor.html",
+        "cover": "templates/cover-letter-template.harbor.html"
+      },
+      "previews": {
+        "cv": "templates/previews/harbor-cv.png",
+        "cover": "templates/previews/harbor-cover.png"
+      }
+    },
+    {
+      "id": "fern",
+      "displayName": "Fern",
+      "description": "Grounded and methodical: Tahoma, forest-green small-caps headers over muted hairline rules.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "chikorita",
+      "register": "scientific / methodical",
+      "levers": {
+        "face": "tahoma",
+        "axis": "left",
+        "header": "smallcaps-hairline",
+        "accent": "forest",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#2D5A27",
+        "contrastOnWhite": 8.07,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.fern.html",
+        "cover": "templates/cover-letter-template.fern.html"
+      },
+      "previews": {
+        "cv": "templates/previews/fern-cv.png",
+        "cover": "templates/previews/fern-cover.png"
+      }
+    },
+    {
+      "id": "regent",
+      "displayName": "Regent",
+      "description": "Elegant correspondence: Palatino, plum small-caps headers floating on whitespace, no rules.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "gengar",
+      "register": "distinguished senior IC",
+      "levers": {
+        "face": "palatino",
+        "axis": "left",
+        "header": "smallcaps-no-rule",
+        "accent": "plum",
+        "density": "airy"
+      },
+      "accent": {
+        "hex": "#5B2A5E",
+        "contrastOnWhite": 10.84,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.regent.html",
+        "cover": "templates/cover-letter-template.regent.html"
+      },
+      "previews": {
+        "cv": "templates/previews/regent-cv.png",
+        "cover": "templates/previews/regent-cover.png"
+      }
+    },
+    {
+      "id": "herald",
+      "displayName": "Herald",
+      "description": "Assertive name-band: Helvetica, oversized burgundy name over a heavy rule, 3-column grid.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "ditto",
+      "register": "communications / sales",
+      "levers": {
+        "face": "helvetica",
+        "axis": "left",
+        "header": "name-band",
+        "accent": "burgundy",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#6E1E2B",
+        "contrastOnWhite": 11.15,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.herald.html",
+        "cover": "templates/cover-letter-template.herald.html"
+      },
+      "previews": {
+        "cv": "templates/previews/herald-cv.png",
+        "cover": "templates/previews/herald-cover.png"
+      }
+    },
+    {
+      "id": "compass",
+      "displayName": "Compass",
+      "description": "Compact operations: Verdana, slate-navy uppercase headers without rules, lean spacing.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "ditgar",
+      "register": "operations / logistics",
+      "levers": {
+        "face": "verdana",
+        "axis": "left",
+        "header": "uppercase-no-rule",
+        "accent": "slate-navy",
+        "density": "compact"
+      },
+      "accent": {
+        "hex": "#2C3E60",
+        "contrastOnWhite": 10.69,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.compass.html",
+        "cover": "templates/cover-letter-template.compass.html"
+      },
+      "previews": {
+        "cv": "templates/previews/compass-cv.png",
+        "cover": "templates/previews/compass-cover.png"
+      }
+    },
+    {
+      "id": "bastion",
+      "displayName": "Bastion",
+      "description": "Structured enterprise: Carlito/Calibri, deep-pine headers in flat shaded bars, instantly scannable.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "leafish",
+      "register": "structured enterprise",
+      "levers": {
+        "face": "carlito",
+        "axis": "left",
+        "header": "shaded-bar",
+        "accent": "deep-pine",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#1E4D40",
+        "contrastOnWhite": 9.59,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.bastion.html",
+        "cover": "templates/cover-letter-template.bastion.html"
+      },
+      "previews": {
+        "cv": "templates/previews/bastion-cv.png",
+        "cover": "templates/previews/bastion-cover.png"
+      }
+    },
+    {
+      "id": "laurel",
+      "displayName": "Laurel",
+      "description": "Prestige serif: Times, antique-gold page-top hairline and small-caps headers.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "pikachu",
+      "register": "prestige / legal / academia",
+      "levers": {
+        "face": "times",
+        "axis": "left",
+        "header": "gold-top-smallcaps",
+        "accent": "antique-gold",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#806000",
+        "contrastOnWhite": 5.85,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.laurel.html",
+        "cover": "templates/cover-letter-template.laurel.html"
+      },
+      "previews": {
+        "cv": "templates/previews/laurel-cv.png",
+        "cover": "templates/previews/laurel-cover.png"
+      }
+    },
+    {
+      "id": "wayfarer",
+      "displayName": "Wayfarer",
+      "description": "Journey narrative: Helvetica, azure hairline rules and a border-left spine on the experience block.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "azurill",
+      "register": "program mgmt / journey",
+      "levers": {
+        "face": "helvetica",
+        "axis": "left",
+        "header": "rules-spine",
+        "accent": "azure",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#1B5E8A",
+        "contrastOnWhite": 6.97,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.wayfarer.html",
+        "cover": "templates/cover-letter-template.wayfarer.html"
+      },
+      "previews": {
+        "cv": "templates/previews/wayfarer-cv.png",
+        "cover": "templates/previews/wayfarer-cover.png"
+      }
+    }
+  ]
+}

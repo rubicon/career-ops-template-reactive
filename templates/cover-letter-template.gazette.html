@@ -1,0 +1,218 @@
+<!-- career-ops-template
+name: Gazette
+description: Editorial margin-label layout: Verdana, monochrome, DOM-linear left-gutter section labels.
+version: 0.1.0
+date: 2026-07-08
+origin: reactive-resume/bronzor
+atsRisk: design-forward
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — {{NAME}}</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background: #ffffff;
+  }
+
+  body {
+    font-family: Verdana, Tahoma, 'DejaVu Sans', sans-serif;
+    font-size: 11pt;
+    line-height: 1.65;
+    color: #1A1A1A;
+    background: #ffffff;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* Masthead: matches the CV masthead exactly (face, weight, tracking). */
+  .name {
+    font-size: 30pt;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    line-height: 1.08;
+    color: #1A1A1A;
+    margin-bottom: 6px;
+  }
+
+  .contact, .credentials {
+    font-size: 10pt;
+    color: #333333;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #333333;
+    text-decoration: none;
+  }
+
+  /* The Gazette masthead device: a strong 2px editorial rule closing the
+     letterhead (replaces the base template's hairline divider). */
+  .divider {
+    border: none;
+    border-top: 2px solid #1A1A1A;
+    margin: 12px 0 4px;
+  }
+
+  /* Structural moments carry the CV's gutter-label voice:
+     small caps-style tracking, muted gray, all type set flush left. */
+  .role-title {
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #1A1A1A;
+    margin-top: 16px;
+    margin-bottom: 2px;
+  }
+
+  .dateline {
+    font-size: 10pt;
+    letter-spacing: 0.4px;
+    color: #555555;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #d9d9d9;
+    margin-bottom: 14px;
+  }
+
+  .greeting {
+    color: #1A1A1A;
+    margin-bottom: 9px;
+  }
+
+  p {
+    color: #262626;
+    margin-bottom: 9px;
+  }
+
+  .achievements {
+    list-style: none;
+    margin-bottom: 5px;
+  }
+
+  .achievements li {
+    color: #2b2b2b;
+    padding-left: 13px;
+    text-indent: -13px;
+    margin-bottom: 5px;
+  }
+
+  .achievements li::before {
+    content: "\2014  ";
+    color: #1A1A1A;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 5px;
+    margin-bottom: 9px;
+  }
+
+  .footnotes {
+    margin-top: 12px;
+    padding-top: 5px;
+    border-top: 1px solid #d9d9d9;
+  }
+
+  .footnotes p {
+    font-size: 10pt;
+    color: #555555;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+  /* === RTL (Arabic) Support === */
+  html[lang="ar"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .name,
+  html[lang="ar"] .role-title {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .achievements li {
+    padding-left: 0;
+    padding-right: 13px;
+  }
+
+  /* === CJK (Japanese) font fallback === */
+  /* Latin theme faces stay first so ASCII keeps the Verdana voice, then the
+     browser's per-glyph fallback picks the first installed CJK face for kana
+     and kanji (avoids tofu on systems without a CJK default). */
+  html[lang="ja"] body {
+    font-family: Verdana, Tahoma, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
+      'Yu Gothic', 'YuGothic', 'Noto Sans CJK JP', 'Noto Sans JP',
+      Meiryo, 'MS PGothic', sans-serif;
+  }
+  /* Recipient address block (business-letter form). Ink only: accent is
+     forbidden on letter furniture. When {{RECIPIENT_BLOCK}} is empty the whole
+     element is absent (no box, no dangling label, no collapsed gap) and the
+     dateline's own bottom margin carries the date -> Re: -> salutation rhythm. */
+  .recipient {
+    margin: 0 0 12pt;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  .recipient div {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="name">{{NAME}}</div>
+  <div class="contact">{{CONTACT_LINE}}</div>
+  {{CREDENTIALS_BLOCK}}
+  <hr class="divider">
+  <div class="dateline">{{DATELINE}}</div>
+  {{RECIPIENT_BLOCK}}
+  <div class="role-title">Re: Application for {{ROLE_TITLE}}</div>
+
+
+  {{GREETING_BLOCK}}
+  <p>{{OPENING}}</p>
+  <p>{{PROFILE_INTRO}}</p>
+
+  {{ACHIEVEMENTS_BLOCK}}
+
+  {{PROBLEMS_BLOCK}}
+  {{CLOSING_BLOCK}}
+  {{LANGUAGE_CLOSING_BLOCK}}
+  {{FOOTNOTES_BLOCK}}
+</body>
+</html>
