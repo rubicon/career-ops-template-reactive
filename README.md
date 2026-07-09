@@ -70,6 +70,15 @@ A labels-above fallback is documented in the Gazette template header.
 
 Each theme, CV and cover letter. Full-size PNGs live in `templates/previews/`.
 
+**Regenerate them** (after editing any template, or when adding a theme):
+
+```bash
+npm run previews:setup   # one-time: installs Playwright + Chromium (not saved as a dependency)
+npm run previews         # renders every template in pack.json; pass ids to scope: npm run previews ledger
+```
+
+The previews are rendered from `sample-cv.json` (non-personal sample data) at 1224x1584. They **approximate** the authoritative career-ops render (`generate-pdf.mjs`, which uses `@page` margins and `preferCSSPageSize`); the script mimics the print margin with a screen-only padding rule, so the result is close, not pixel-for-pixel. Playwright is installed on demand and is never a dependency, so the pack stays passive data.
+
 | Theme    | CV                                                 | Cover letter                                             |
 | -------- | -------------------------------------------------- | -------------------------------------------------------- |
 | Ledger   | ![Ledger CV](templates/previews/ledger-cv.png)     | ![Ledger cover](templates/previews/ledger-cover.png)     |
