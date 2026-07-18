@@ -6,7 +6,7 @@ repository. `AGENTS.md` is a pointer to this file.
 ## What this project is
 
 career-ops-template-reactive is the reactive
-[career-ops](https://github.com/santifer/career-ops) template pack: fifteen
+[career-ops](https://github.com/santifer/career-ops) template pack: sixteen
 ATS-strict CV and cover-letter theme pairs, ported from the Reactive Resume
 designs and reimplemented as single-column, parser-safe HTML. See `README.md` for
 the theme table and previews, and `ARCHITECTURE.md` for the layout. It is built
@@ -30,7 +30,7 @@ into a career-ops checkout. There is no runtime code here that career-ops runs.
 - **Placeholder completeness and meta agreement.** Each template fills the full
   slot set for its kind, and its `<!-- career-ops-template -->` meta `name:`
   equals the entry's `displayName` in `pack.json`.
-- **Fifteen themes, each a unique coordinate.** No two templates share the
+- **Sixteen themes, each a unique coordinate.** No two templates share the
   `{face, axis, header}` triple; the validator enforces it. The taxonomy lives in
   the template scaffold's `docs/AUTHORING.md`.
 - **Gazette is the only design-forward theme.** Its `atsRisk` is

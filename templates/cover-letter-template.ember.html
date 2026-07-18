@@ -1,0 +1,227 @@
+<!-- career-ops-template
+name: Ember
+description: Cover letter matching the Ember CV — Georgia serif, centered light masthead, accent-lead ruled Re: line, ink letter furniture.
+version: 0.1.0
+date: 2026-07-18
+origin: reactive-resume/nosepass
+atsRisk: none
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cover Letter — {{NAME}}</title>
+<style>
+  /* Ember — cover-letter companion to cv-template.ember.html. Same Georgia
+     system stack, same centered light nameplate, and the CV's accent-lead
+     ruled-header treatment carried onto the letter's one structural moment (the
+     Re: line). Accent (warm vermilion) stays on that header only; greeting,
+     closing, and signature are ink, pack-wide. */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Required ligatures (rlig) stay on. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 11.5pt;
+    line-height: 1.65;
+    color: #1A1A1A;
+    background: #ffffff;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* ---------- Masthead (matches the Ember CV: centered, light nameplate) ---------- */
+  .masthead {
+    text-align: center;
+  }
+
+  .name {
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 26pt;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.1;
+    color: #111111;
+    margin-bottom: 6px;
+  }
+
+  .contact, .credentials {
+    font-size: 10.5pt;
+    color: #1A1A1A;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .contact a, .credentials a, .footnotes a {
+    color: #1A1A1A;
+    text-decoration: none;
+  }
+
+  /* A hairline masthead divider matching the CV's gray section rules (a border,
+     never a glyph). */
+  .divider {
+    border: none;
+    border-top: 1px solid #C4C4C4;
+    margin: 9px 0 24px;
+  }
+
+  /* Structural moment: the CV's accent-lead ruled header, carried onto the Re:
+     line. The label text is wrapped so ::first-letter has a block-container to
+     latch onto; the accent lands on that leading letter and .role-title::after
+     grows a hairline rule to the right margin. Letter furniture below stays ink. */
+  .role-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    margin-bottom: 3px;
+  }
+
+  .role-title-text {
+    flex: 0 0 auto;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    color: #1A1A1A;
+  }
+
+  .role-title-text::first-letter {
+    color: #A83226;
+    font-weight: 700;
+  }
+
+  .role-title::after {
+    content: "";
+    flex: 1 1 auto;
+    border-top: 1px solid #C4C4C4;
+  }
+
+  .dateline {
+    font-size: 10.5pt;
+    color: #555555;
+    margin-bottom: 20px;
+  }
+
+  .greeting {
+    font-size: 11.5pt;
+    color: #1A1A1A;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 11.5pt;
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+
+  .achievements {
+    list-style: none;
+    margin-bottom: 4px;
+  }
+
+  .achievements li {
+    position: relative;
+    padding-left: 13px;
+    margin-bottom: 5px;
+    line-height: 1.55;
+  }
+
+  .achievements li::before {
+    content: "\2013"; /* en dash — matches the CV list marker */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #111111;
+  }
+
+  .achievements li strong {
+    font-weight: 700;
+    color: #111111;
+  }
+
+  .language-closing {
+    font-style: italic;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+
+  .footnotes {
+    margin-top: 12px;
+    padding-top: 5px;
+    border-top: 1px solid #999999;
+  }
+
+  .footnotes p {
+    font-size: 10pt;
+    color: #555555;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+
+  /* ---------- Print ---------- */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+  /* Recipient address block (business-letter form). Ink only: accent is
+     forbidden on letter furniture. When {{RECIPIENT_BLOCK}} is empty the whole
+     element is absent (no box, no dangling label, no collapsed gap) and the
+     dateline's own bottom margin carries the date -> Re: -> salutation rhythm. */
+  .recipient {
+    margin: 0 0 12pt;
+    color: #1A1A1A;
+    line-height: 1.45;
+  }
+  .recipient div {
+    margin: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="masthead">
+    <div class="name">{{NAME}}</div>
+    <div class="contact">{{CONTACT_LINE}}</div>
+    {{CREDENTIALS_BLOCK}}
+  </div>
+  <hr class="divider">
+  <div class="dateline">{{DATELINE}}</div>
+  {{RECIPIENT_BLOCK}}
+  <div class="role-title"><span class="role-title-text">Re: Application for {{ROLE_TITLE}}</span></div>
+
+
+  {{GREETING_BLOCK}}
+  <p>{{OPENING}}</p>
+  <p>{{PROFILE_INTRO}}</p>
+
+  {{ACHIEVEMENTS_BLOCK}}
+
+  {{PROBLEMS_BLOCK}}
+  {{CLOSING_BLOCK}}
+  {{LANGUAGE_CLOSING_BLOCK}}
+  {{FOOTNOTES_BLOCK}}
+</body>
+</html>

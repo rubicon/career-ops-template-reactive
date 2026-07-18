@@ -1,6 +1,6 @@
 # Architecture
 
-career-ops-template-reactive is fifteen ATS-strict CV and cover-letter theme
+career-ops-template-reactive is sixteen ATS-strict CV and cover-letter theme
 pairs for career-ops. A pack is passive data that career-ops renders `cv.md`
 through; there is no runtime code here that career-ops executes. The pack is built
 on the [template scaffold](https://github.com/rubicon/career-ops-template-template),
@@ -10,12 +10,12 @@ which owns the authoring guide and the design-lever taxonomy.
 
 ```text
 career-ops-template-reactive/
-  pack.json                          # the manifest: 15 template entries with levers, accent, attribution
+  pack.json                          # the manifest: 16 template entries with levers, accent, attribution
   templates/
-    cv-template.<theme>.html         # 15 CV templates
-    cover-letter-template.<theme>.html   # 15 matching cover-letter templates
+    cv-template.<theme>.html         # 16 CV templates
+    cover-letter-template.<theme>.html   # 16 matching cover-letter templates
     previews/
-      <theme>-cv.png                 # 30 render previews, 1224x1584
+      <theme>-cv.png                 # 32 render previews, 1224x1584
       <theme>-cover.png
   validate-template-pack.mjs         # the dependency-free pack validator (vendored from the scaffold)
   test/
@@ -23,14 +23,14 @@ career-ops-template-reactive/
     smoke.mjs                        # self-check: this pack validates against its own manifest
 ```
 
-The fifteen themes are Ledger, Slate, Meridian, Cadence, Beacon, Gazette, Tempo,
-Harbor, Fern, Regent, Herald, Compass, Bastion, Laurel, and Wayfarer.
+The sixteen themes are Ledger, Slate, Meridian, Cadence, Beacon, Gazette, Tempo,
+Harbor, Fern, Regent, Herald, Compass, Bastion, Laurel, Wayfarer, and Ember.
 
 ## One coordinate per theme
 
 Each theme occupies a unique point in the design-lever taxonomy: a face class, an
 alignment axis, and a header treatment. The validator rejects any two templates
-that share the `{face, axis, header}` triple, which is what keeps fifteen
+that share the `{face, axis, header}` triple, which is what keeps sixteen
 single-column, parser-safe templates visibly distinct. Accent hue and density
 vary too, but they are texture, not the thing that separates one theme from
 another. The taxonomy and the reasoning behind each port live in the scaffold's

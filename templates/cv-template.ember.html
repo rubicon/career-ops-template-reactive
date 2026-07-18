@@ -1,0 +1,614 @@
+<!-- career-ops-template
+name: Ember
+description: Centered serif masthead with accent-lead ruled headers: Georgia, warm vermilion initials, hairline section rules, small-caps roles.
+version: 0.1.0
+date: 2026-07-18
+origin: reactive-resume/nosepass
+atsRisk: none
+-->
+<!DOCTYPE html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{NAME}} — CV</title>
+<style>
+  /* Ember — centered serif masthead with accent-lead ruled headers. Georgia
+     system stack, a light centered nameplate over a centered contact line, and
+     section headers whose leading letter glows in a warm vermilion accent
+     before a hairline rule runs to the right margin. Small-caps role lines,
+     right-flush italic dates in ink. ATS-strict: single column, system fonts
+     only, no images/tables/webfonts; the accent stays on headers, never in
+     body or bullet copy. */
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* Disable fi/fl/ffi ligatures. Headless Chromium substitutes these letter
+       pairs with the Unicode glyphs U+FB01/FB02/FB03 at PDF layout time, and PDF
+       text extractors (what ATS systems read) decode them back to those
+       codepoints, so "verification" becomes "veriﬁcation" and a literal keyword
+       search misses it. Setting this on every element covers headings and
+       competency items too. Required ligatures (rlig) stay on, so Arabic shaping
+       is unaffected. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  body {
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 11pt;
+    line-height: 1.42;
+    color: #1A1A1A;
+    background: #ffffff;
+    padding: 0;
+    margin: 0;
+    /* Disable ligatures here as well; see the * rule above. */
+    font-variant-ligatures: none;
+    font-feature-settings: "liga" 0, "clig" 0, "dlig" 0;
+  }
+
+  .page {
+    width: 100%;
+    max-width: {{PAGE_WIDTH}};
+    margin: 0 auto;
+    padding: 2px 0;
+  }
+
+  /* === HEADER === */
+  /* Ember's masthead: a centered, lightly tracked nameplate at a lighter weight
+     than the ruled themes, sitting above a centered contact line. No under-rule
+     -- the ruled motif belongs to the section headers below. */
+  .header {
+    text-align: center;
+    padding-bottom: 4px;
+    margin-bottom: 11px;
+  }
+
+  .header h1 {
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 27pt;
+    font-weight: 400;
+    color: #111111;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+    line-height: 1.1;
+  }
+
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px 10px;
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 10.5pt;
+    line-height: 1.42;
+    color: #1A1A1A;
+  }
+
+  .contact-row a {
+    color: #1A1A1A;
+    text-decoration: none;
+  }
+
+  .contact-row .separator {
+    color: #999999;
+  }
+
+  /* === OPTIONAL PROFILE PHOTO (opt-in, DACH/European markets — #264) ===
+     Off by default: with no candidate.photo the {{PHOTO}} slot is empty, no
+     image element is emitted, and the layout is byte-identical to a photoless CV.
+     When opted in (candidate.photo in config/profile.yml) the photo floats into
+     the top corner and the header/summary text wraps beside it. Photos are
+     penalized by US/UK/many-market ATS, so this is never on by default. */
+  .cv-photo {
+    float: right;
+    width: 80px;
+    height: 100px;
+    object-fit: cover;
+    margin: 0 0 8px 14px;
+    border: 1px solid #999999;
+  }
+
+  /* === SECTIONS === */
+  .section {
+    margin-bottom: 8px;
+  }
+
+  /* Accent-lead ruled section header — the Ember signature. The label text is
+     wrapped in .section-title-text so ::first-letter has a block-container to
+     latch onto (a flex container does not expose ::first-letter); the accent
+     lands on that leading letter, and .section-title::after grows a hairline
+     rule out to the right margin. */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    line-height: 1.2;
+  }
+
+  .section-title-text {
+    display: inline-block;
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 11.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: #111111;
+    flex: 0 0 auto;
+  }
+
+  .section-title-text::first-letter {
+    color: #A83226;
+    font-weight: 700;
+  }
+
+  .section-title::after {
+    content: "";
+    flex: 1 1 auto;
+    border-top: 1px solid #C4C4C4;
+  }
+
+  /* === PROFESSIONAL SUMMARY === */
+  .summary-text {
+    max-width: 46em;
+    font-size: 11pt;
+    line-height: 1.42;
+    color: #1A1A1A;
+  }
+
+  /* Links must never break across lines */
+  a {
+    white-space: nowrap;
+  }
+
+  /* === CORE COMPETENCIES === */
+  /* Two text columns of en-dash items (not chips) — CSS columns on the grid
+     container only, never on the page. */
+  .competencies-grid {
+    column-count: 2;
+    column-gap: 28px;
+  }
+
+  .competency-tag {
+    display: block;
+    position: relative;
+    padding-left: 13px;
+    margin-bottom: 2px;
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 11pt;
+    font-weight: 400;
+    line-height: 1.42;
+    color: #1A1A1A;
+  }
+
+  .competency-tag::before {
+    content: "\2013"; /* en dash */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #111111;
+  }
+
+  /* === WORK EXPERIENCE === */
+  .job {
+    margin-bottom: 7px;
+  }
+
+  .job-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 2px;
+  }
+
+  .job-company {
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 11.5pt;
+    font-weight: 700;
+    color: #111111;
+  }
+
+  /* Right-flush italic dates in ink (the accent never leaves the header). */
+  .job-period {
+    font-size: 10.5pt;
+    font-weight: 400;
+    font-style: italic;
+    color: #555555;
+    white-space: nowrap;
+  }
+
+  /* Small-caps role line — the Ember voice for the title/location line.
+     font-variant-caps (not the font-variant shorthand) so the ligature
+     controls set above are left untouched. */
+  .job-role {
+    font-size: 11pt;
+    font-weight: 400;
+    font-variant-caps: small-caps;
+    letter-spacing: 0.03em;
+    color: #333333;
+    margin-bottom: 2px;
+  }
+
+  /* Ashworth "do #3": a one- to two-line descriptor of each company
+     (what it does, revenue, size, locations). Rendered between the
+     company/period line and the role title. Kept muted so it supports,
+     not competes with, bullets. */
+  .job-descriptor {
+    font-style: italic;
+    font-size: 10pt;
+    color: #555555;
+    line-height: 1.42;
+    margin-bottom: 2px;
+  }
+
+  .job-location {
+    font-size: 10pt;
+    font-style: italic;
+    color: #555555;
+  }
+
+  .job ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 2px;
+  }
+
+  .job li {
+    position: relative;
+    padding-left: 13px;
+    margin-bottom: 2.5px;
+    font-size: 10.5pt;
+    line-height: 1.42;
+    color: #1A1A1A;
+  }
+
+  .job li::before {
+    content: "\2013"; /* en dash */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #111111;
+  }
+
+  .job li strong {
+    font-weight: 700;
+    color: #111111;
+  }
+
+  /* === PROJECTS === */
+  .project {
+    margin-bottom: 5px;
+  }
+
+  .project-title {
+    font-family: Georgia, 'Times New Roman', 'DejaVu Serif', serif;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #111111;
+  }
+
+  .project-badge {
+    font-size: 10pt;
+    font-weight: 400;
+    font-style: italic;
+    color: #555555;
+    margin-left: 6px;
+  }
+
+  .project-desc {
+    font-size: 10.5pt;
+    color: #1A1A1A;
+    margin-top: 2px;
+    line-height: 1.42;
+  }
+
+  .project-tech {
+    font-size: 10pt;
+    font-style: italic;
+    color: #555555;
+    margin-top: 2px;
+  }
+
+  /* === EDUCATION === */
+  .edu-item {
+    margin-bottom: 3px;
+  }
+
+  .edu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .edu-title {
+    font-weight: 700;
+    font-size: 11pt;
+    color: #111111;
+  }
+
+  .edu-org {
+    font-style: italic;
+    font-weight: 400;
+    color: #1A1A1A;
+  }
+
+  .edu-year {
+    font-size: 10.5pt;
+    font-weight: 400;
+    font-style: italic;
+    color: #555555;
+    white-space: nowrap;
+  }
+
+  .edu-desc {
+    font-size: 10pt;
+    color: #555555;
+    margin-top: 2px;
+    line-height: 1.42;
+  }
+
+  /* === CERTIFICATIONS === */
+  .cert-table {
+    display: table;
+    width: 100%;
+  }
+
+  .cert-item {
+    display: table-row;
+  }
+
+  .cert-item > * {
+    display: table-cell;
+    vertical-align: baseline;
+    padding-bottom: 5px;
+  }
+
+  .cert-title {
+    font-size: 10.5pt;
+    font-weight: 400;
+    color: #1A1A1A;
+  }
+
+  .cert-org {
+    font-style: italic;
+    color: #1A1A1A;
+    white-space: nowrap;
+  }
+
+  .cert-year {
+    font-size: 10.5pt;
+    font-weight: 400;
+    font-style: italic;
+    color: #555555;
+    white-space: nowrap;
+    text-align: right;
+    width: 44px;
+  }
+
+  /* === SKILLS === */
+  /* Labeled en-dash lines, one per category — matches the competency list voice. */
+  .skills-grid {
+    display: block;
+  }
+
+  .skill-item {
+    display: block;
+    position: relative;
+    padding-left: 13px;
+    margin-bottom: 2px;
+    font-size: 10.5pt;
+    line-height: 1.42;
+    color: #1A1A1A;
+  }
+
+  .skill-item::before {
+    content: "\2013"; /* en dash */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #111111;
+  }
+
+  .skill-category {
+    font-weight: 700;
+    color: #111111;
+    font-size: 10.5pt;
+  }
+
+  /* === PRINT === */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* Keep a small right gutter for the print box. Right-aligned content
+       (job periods, education years) right-aligns to the content-box edge,
+       and the rightmost glyph's side bearing can spill ~1px past it and get
+       clipped by Chromium's print clip. A plain `.page` padding is reset to 0
+       here for print, which is why padding set outside @media print has no
+       effect; restoring a right gutter inside the print rule fixes it without
+       re-centering the page or hard-coding a per-format max-width. See #1341. */
+    .page {
+      padding: 0;
+    }
+  }
+
+  /* === PAGE BREAK CONTROL === */
+  /* Only avoid breaking small atomic units (a cert row, an education line, the
+     header, a single competency or skill).  Sections and multi-bullet roles are
+     allowed to flow across a page boundary so content packs tight instead of
+     jumping wholesale and leaving large bottom gaps. */
+  .header,
+  .edu-item,
+  .cert-item,
+  .competency-tag,
+  .skill-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Keep a heading attached to the content that follows it, so headings are not
+     orphaned at the bottom of a page. */
+  .section-title,
+  .job-company,
+  .job-role,
+  .project-title {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* === RTL (Arabic) Support === */
+  html[lang="ar"] body {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .header h1,
+  html[lang="ar"] .section-title-text,
+  html[lang="ar"] .job-company,
+  html[lang="ar"] .project-title,
+  html[lang="ar"] .competency-tag,
+  html[lang="ar"] .skill-category {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+  }
+
+  html[lang="ar"] .section-title::after {
+    /* rule grows from the other side in RTL; the flex order already handles it */
+    margin: 0;
+  }
+
+  html[lang="ar"] .job li,
+  html[lang="ar"] .competency-tag,
+  html[lang="ar"] .skill-item {
+    padding-right: 13px;
+    padding-left: 0;
+  }
+
+  html[lang="ar"] .job li::before,
+  html[lang="ar"] .competency-tag::before,
+  html[lang="ar"] .skill-item::before {
+    right: 0;
+    left: auto;
+  }
+
+  html[lang="ar"] .project-badge {
+    margin-right: 6px;
+    margin-left: 0;
+  }
+
+  html[lang="ar"] .cert-year {
+    text-align: left;
+  }
+
+  html[lang="ar"] .cert-table {
+    direction: rtl;
+  }
+
+  html[lang="ar"] .cv-photo {
+    float: left;
+    margin: 0 14px 8px 0;
+  }
+
+  /* === CJK (Japanese) font fallback === */
+  /* Without a CJK fallback, Japanese text renders as tofu (□) in headless
+     Chromium on any system without a CJK system font (Linux/CI, minimal
+     containers). The Latin serif stack is kept first so ASCII still uses
+     Georgia, then the browser's per-glyph fallback picks the first installed
+     CJK serif face for kana and kanji. Mirrors the lang="ar" precedent above. */
+  html[lang="ja"] body {
+    font-family: Georgia, 'Times New Roman', 'Hiragino Mincho ProN', 'Yu Mincho',
+      'YuMincho', 'Noto Serif CJK JP', 'Noto Serif JP',
+      'MS PMincho', serif;
+  }
+
+  html[lang="ja"] .header h1,
+  html[lang="ja"] .section-title-text,
+  html[lang="ja"] .job-company,
+  html[lang="ja"] .project-title,
+  html[lang="ja"] .competency-tag,
+  html[lang="ja"] .skill-category {
+    font-family: Georgia, 'Times New Roman', 'Hiragino Mincho ProN', 'Yu Mincho',
+      'YuMincho', 'Noto Serif CJK JP', 'Noto Serif JP',
+      'MS PMincho', serif;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  {{PHOTO}}
+  <!-- HEADER -->
+  <div class="header">
+    <h1>{{NAME}}</h1>
+    <div class="contact-row">
+      <a href="tel:{{PHONE}}">{{PHONE}}</a>
+      <span class="separator">|</span>
+      <a href="mailto:{{EMAIL}}">{{EMAIL}}</a>
+      <span class="separator">|</span>
+      <a href="{{LINKEDIN_URL}}">{{LINKEDIN_DISPLAY}}</a>
+      <span class="separator">|</span>
+      <a href="{{PORTFOLIO_URL}}">{{PORTFOLIO_DISPLAY}}</a>
+      <span class="separator">|</span>
+      <span>{{LOCATION}}</span>
+    </div>
+  </div>
+
+  <!-- PROFESSIONAL SUMMARY -->
+  <div class="section">
+    <div class="section-title"><span class="section-title-text">{{SECTION_SUMMARY}}</span></div>
+    <div class="summary-text">{{SUMMARY_TEXT}}</div>
+  </div>
+
+  <!-- CORE COMPETENCIES -->
+  <div class="section">
+    <div class="section-title"><span class="section-title-text">{{SECTION_COMPETENCIES}}</span></div>
+    <div class="competencies-grid">
+      {{COMPETENCIES}}
+    </div>
+  </div>
+
+  <!-- WORK EXPERIENCE -->
+  <div class="section">
+    <div class="section-title"><span class="section-title-text">{{SECTION_EXPERIENCE}}</span></div>
+    {{EXPERIENCE}}
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title"><span class="section-title-text">{{SECTION_PROJECTS}}</span></div>
+    {{PROJECTS}}
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-title"><span class="section-title-text">{{SECTION_EDUCATION}}</span></div>
+    {{EDUCATION}}
+  </div>
+
+  <!-- CERTIFICATIONS -->
+  <div class="section">
+    <div class="section-title"><span class="section-title-text">{{SECTION_CERTIFICATIONS}}</span></div>
+    <div class="cert-table">{{CERTIFICATIONS}}</div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title"><span class="section-title-text">{{SECTION_SKILLS}}</span></div>
+    {{SKILLS}}
+  </div>
+
+</div>
+</body>
+</html>

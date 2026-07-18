@@ -3,7 +3,7 @@
   "id": "reactive",
   "name": "career-ops-template-reactive",
   "displayName": "Reactive Pack",
-  "description": "Fifteen ATS-strict CV and cover-letter theme pairs, ported from the Reactive Resume template designs.",
+  "description": "Sixteen ATS-strict CV and cover-letter theme pairs, ported from the Reactive Resume template designs.",
   "author": "Dax C. Davis",
   "homepage": "https://github.com/rubicon/career-ops-template-reactive",
   "license": "MIT",
@@ -468,6 +468,36 @@
       "previews": {
         "cv": "templates/previews/wayfarer-cv.png",
         "cover": "templates/previews/wayfarer-cover.png"
+      }
+    },
+    {
+      "id": "ember",
+      "displayName": "Ember",
+      "description": "Centered serif masthead with accent-lead ruled headers: Georgia, warm vermilion initials over hairline section rules, small-caps roles.",
+      "kind": "both",
+      "ats": true,
+      "atsRisk": "none",
+      "origin": "nosepass",
+      "register": "software / product / startup",
+      "levers": {
+        "face": "georgia",
+        "axis": "left",
+        "header": "accent-lead-rule",
+        "accent": "ember",
+        "density": "regular"
+      },
+      "accent": {
+        "hex": "#A83226",
+        "contrastOnWhite": 6.67,
+        "grayscaleSafe": true
+      },
+      "files": {
+        "cv": "templates/cv-template.ember.html",
+        "cover": "templates/cover-letter-template.ember.html"
+      },
+      "previews": {
+        "cv": "templates/previews/ember-cv.png",
+        "cover": "templates/previews/ember-cover.png"
       }
     }
   ]

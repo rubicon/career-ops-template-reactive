@@ -1,6 +1,6 @@
 # career-ops-template-reactive
 
-Fifteen ATS-strict CV and cover-letter theme pairs for
+Sixteen ATS-strict CV and cover-letter theme pairs for
 [career-ops](https://github.com/santifer/career-ops), ported from the Reactive
 Resume template designs and reimplemented as single-column, parser-safe HTML.
 
@@ -14,7 +14,7 @@ masthead, face, accent, and density. Every template is single-column, uses syste
 font stacks only (no webfonts), carries no images, tables, or icons, and uses at
 most one grayscale-safe accent that never appears in body or bullet copy. The
 point is to pass ATS text extraction reliably while still reading as a designed,
-distinct document. Fourteen themes are ATS-clean with no caveats; Gazette is
+distinct document. Fifteen themes are ATS-clean with no caveats; Gazette is
 marked design-forward and carries an honest disclosure in its own header.
 
 This pack is passive data. career-ops renders your `cv.md` through a chosen
@@ -55,6 +55,7 @@ or a cover letter. Copy as many themes as you want to try.
 | Bastion  | leafish   | Calibri      | shaded header bars            | deep-pine (#1E4D40)    | structured enterprise        | none           |
 | Laurel   | pikachu   | Times        | gold top hairline, small-caps | antique-gold (#806000) | prestige / legal / academia  | none           |
 | Wayfarer | azurill   | Helvetica    | thin rules, left spine        | azure (#1B5E8A)        | program mgmt / journey       | none           |
+| Ember    | nosepass  | Georgia      | accent-lead initials + rule   | ember (#A83226)        | software / product / startup | none           |
 
 Face names above are the design intent; each template ships a full system font
 stack (for example Calibri renders through Carlito on Linux). Accent hex values
@@ -96,6 +97,7 @@ The previews are rendered from `sample-cv.json` (non-personal sample data) at 12
 | Bastion  | ![Bastion CV](templates/previews/bastion-cv.png)   | ![Bastion cover](templates/previews/bastion-cover.png)   |
 | Laurel   | ![Laurel CV](templates/previews/laurel-cv.png)     | ![Laurel cover](templates/previews/laurel-cover.png)     |
 | Wayfarer | ![Wayfarer CV](templates/previews/wayfarer-cv.png) | ![Wayfarer cover](templates/previews/wayfarer-cover.png) |
+| Ember    | ![Ember CV](templates/previews/ember-cv.png)       | ![Ember cover](templates/previews/ember-cover.png)       |
 
 ## Validate
 
